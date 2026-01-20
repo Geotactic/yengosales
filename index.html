@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YENGO | Saber a quién visitar, cuándo y por qué</title>
+    <meta name="description" content="CRM de visitas comerciales. Priorización automática de clientes para equipos de ventas.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --azul-oscuro: #1a2b4a;
+            --azul-medio: #243a5e;
+            --verde: #2ecc71;
+            --verde-hover: #27ae60;
+            --blanco: #ffffff;
+            --blanco-80: rgba(255,255,255,0.8);
+            --blanco-60: rgba(255,255,255,0.6);
+            --blanco-20: rgba(255,255,255,0.2);
+            --blanco-10: rgba(255,255,255,0.1);
+            --font-serif: 'Libre Baskerville', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--azul-oscuro);
+            color: var(--blanco);
+            line-height: 1.6;
+        }
+
+        /* Fondo con gradiente sutil como la presentación */
+        .hero {
+            background: linear-gradient(135deg, rgba(26, 43, 74, 0.9) 0%, rgba(36, 58, 94, 0.85) 50%, rgba(26, 43, 74, 0.9) 100%),
+                        url('hero-bg.jpg') center/cover no-repeat;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(46, 204, 113, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(36, 58, 94, 0.5) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .problema {
+            background: linear-gradient(180deg, #243a5e 0%, #1e3250 100%);
+            position: relative;
+        }
+
+        .problema::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(46, 204, 113, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .solucion {
+            background: linear-gradient(180deg, #1a2b4a 0%, #1e3250 100%);
+        }
+
+        .motor {
+            background: linear-gradient(180deg, #243a5e 0%, #2a4570 50%, #243a5e 100%);
+            position: relative;
+        }
+
+        .motor::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 80% 100%, rgba(46, 204, 113, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .precios {
+            background: linear-gradient(180deg, #1a2b4a 0%, #1e3250 100%);
+        }
+
+        .cta-final {
+            background: linear-gradient(135deg, #243a5e 0%, #2a4570 100%);
+            position: relative;
+        }
+
+        .cta-final::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(46, 204, 113, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 0;
+            background: rgba(26, 43, 74, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--blanco);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+        }
+
+        .btn-header {
+            background: var(--verde);
+            color: var(--azul-oscuro);
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-header:hover {
+            background: var(--verde-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-logo {
+            height: 80px;
+            width: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.35rem;
+            color: var(--verde);
+            margin-bottom: 3rem;
+            font-weight: 500;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--blanco-60);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--verde);
+            color: var(--azul-oscuro);
+            padding: 1.1rem 2.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--verde-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--blanco-60);
+            font-size: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* Problema */
+        .problema {
+            padding: 6rem 0;
+        }
+
+        .problema .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .problema h2 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .problema-intro {
+            text-align: center;
+            color: var(--blanco-60);
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+        }
+
+        .problema-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .problema-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .problema-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .problema-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .problema-item p {
+            color: var(--blanco-60);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Solución */
+        .solucion {
+            padding: 6rem 0;
+        }
+
+        .solucion h2 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .solucion-intro {
+            text-align: center;
+            color: var(--verde);
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+        }
+
+        .solucion-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+
+        .solucion-item {
+            padding: 2.5rem;
+            border: 1px solid var(--blanco-10);
+            position: relative;
+        }
+
+        .solucion-item:hover {
+            background: var(--blanco-10);
+        }
+
+        .solucion-num {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            color: var(--verde);
+            opacity: 0.3;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+        }
+
+        .solucion-item h3 {
+            font-size: 1.15rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .solucion-item p {
+            color: var(--blanco-60);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Motor */
+        .motor {
+            padding: 6rem 0;
+        }
+
+        .motor .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .motor h2 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .prioridades {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .prioridad-card {
+            background: var(--azul-oscuro);
+            border-radius: 8px;
+            padding: 2rem;
+            border-top: 4px solid;
+        }
+
+        .prioridad-alta { border-color: #e74c3c; }
+        .prioridad-media { border-color: #f39c12; }
+        .prioridad-baja { border-color: var(--verde); }
+
+        .prioridad-card h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .prioridad-alta h3 { color: #e74c3c; }
+        .prioridad-media h3 { color: #f39c12; }
+        .prioridad-baja h3 { color: var(--verde); }
+
+        .prioridad-card ul {
+            list-style: none;
+        }
+
+        .prioridad-card li {
+            padding: 0.5rem 0;
+            color: var(--blanco-80);
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--blanco-10);
+        }
+
+        .prioridad-card li:last-child {
+            border-bottom: none;
+        }
+
+        .prioridad-card li::before {
+            content: '•';
+            margin-right: 0.75rem;
+        }
+
+        .prioridad-alta li::before { color: #e74c3c; }
+        .prioridad-media li::before { color: #f39c12; }
+        .prioridad-baja li::before { color: var(--verde); }
+
+        .motor-frase {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--blanco-60);
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        /* Referencia */
+        .referencia {
+            padding: 5rem 0;
+            text-align: center;
+            border-top: 1px solid var(--blanco-10);
+            border-bottom: 1px solid var(--blanco-10);
+        }
+
+        .referencia p {
+            color: var(--blanco-60);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .referencia strong {
+            color: var(--blanco);
+            font-size: 1.25rem;
+        }
+
+        /* Precios */
+        .precios {
+            padding: 6rem 0;
+        }
+
+        .precios h2 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .precios-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .precio-card {
+            background: var(--azul-medio);
+            border-radius: 8px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .precio-card h3 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--blanco-60);
+            margin-bottom: 1rem;
+        }
+
+        .precio-valor {
+            font-family: var(--font-serif);
+            font-size: 2.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .precio-valor span {
+            font-size: 1rem;
+            color: var(--blanco-60);
+            font-family: var(--font-sans);
+        }
+
+        .precio-tipo {
+            color: var(--verde);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .precio-card ul {
+            list-style: none;
+            text-align: left;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--blanco-10);
+        }
+
+        .precio-card li {
+            padding: 0.4rem 0;
+            color: var(--blanco-80);
+            font-size: 0.9rem;
+        }
+
+        .precio-card li::before {
+            content: '✓';
+            color: var(--verde);
+            margin-right: 0.75rem;
+        }
+
+        /* CTA Final */
+        .cta-final {
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .cta-final .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-final h2 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-final p {
+            color: var(--blanco-60);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid var(--blanco-10);
+        }
+
+        footer .logo {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .footer-logo {
+            height: 50px;
+            width: auto;
+            margin-bottom: 1rem;
+        }
+
+        footer p {
+            color: var(--blanco-60);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--verde);
+            text-decoration: none;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--azul-oscuro);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 2.5rem;
+            border: 1px solid var(--blanco-20);
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--blanco-60);
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--blanco);
+        }
+
+        .modal-title {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            color: var(--verde);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-body p {
+            color: var(--blanco-80);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .modal-body ul {
+            list-style: none;
+            margin: 1rem 0 1.5rem 0;
+        }
+
+        .modal-body li {
+            color: var(--blanco);
+            padding: 0.5rem 0;
+            font-style: italic;
+        }
+
+        .modal-body li::before {
+            content: '"';
+            color: var(--verde);
+        }
+
+        .modal-tagline {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--blanco-10);
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: var(--verde);
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Formulario */
+        .modal-subtitle {
+            color: var(--blanco-60);
+            margin-bottom: 1.5rem;
+        }
+
+        .demo-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: var(--blanco-80);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--blanco-20);
+            border-radius: 6px;
+            background: var(--azul-medio);
+            color: var(--blanco);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--verde);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .honeypot {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+            height: 0;
+            width: 0;
+        }
+
+        .btn-submit {
+            margin-top: 0.5rem;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-sans);
+        }
+
+        .form-success {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--verde);
+            color: var(--azul-oscuro);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .form-success h3 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-success p {
+            color: var(--blanco-60);
+        }
+
+        .form-error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .problema-grid,
+            .solucion-grid,
+            .prioridades {
+                grid-template-columns: 1fr;
+            }
+
+            .precios-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 1rem 0;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            .btn-header {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                padding: 7rem 1.5rem 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .problema, .solucion, .motor, .precios, .cta-final {
+                padding: 4rem 0;
+            }
+
+            .problema h2, .solucion h2, .motor h2, .precios h2, .cta-final h2 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Modal Yengo -->
+    <div id="modal-yengo" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 class="modal-title">De la intención a la acción</h2>
+            <div class="modal-body">
+                <p><strong>Yen</strong> en inglés antiguo y poético significa un deseo intenso o un anhelo profundo. También significa "ser bueno en algo". Significa que estás "en tu ritmo", haciendo algo para lo que tienes un talento natural.</p>
+                <p>Entonces, <strong>Yengo CRM</strong>, al integrar esa raíz con el verbo "Go" (ir, avanzar, actuar), puede interpretarse como:</p>
+                <ul>
+                    <li>"El impulso de actuar en lo que haces bien."</li>
+                    <li>"El deseo de ir más allá."</li>
+                    <li>"El anhelo de progreso."</li>
+                </ul>
+                <p>Yengo expresa el impulso natural de avanzar, de transformar la intención en movimiento, y el anhelo de progreso que habita en cada empresa que quiere llegar más lejos en lo que sabe hacer.</p>
+                <p>Yengo CRM no es solo una herramienta de gestión de clientes — es la energía que convierte las relaciones en resultados, donde cada contacto, oportunidad y decisión se transforman en acción y crecimiento.</p>
+                <p class="modal-tagline">De la intención a la acción — Yengo CRM.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Formulario Demo -->
+    <div id="modal-demo" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeDemoModal()">&times;</button>
+            <h2 class="modal-title">Solicitar Demo</h2>
+            <p class="modal-subtitle">Completa el formulario y te contactaremos pronto.</p>
+            <form id="demo-form" class="demo-form" onsubmit="return submitForm(event)">
+                <!-- Honeypot - campo invisible para bots -->
+                <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off">
+                
+                <div class="form-group">
+                    <label for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="empresa">Empresa *</label>
+                    <input type="text" id="empresa" name="empresa" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono / WhatsApp *</label>
+                    <input type="tel" id="telefono" name="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="mensaje">Mensaje (opcional)</label>
+                    <textarea id="mensaje" name="mensaje" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="captcha" id="captcha-label">¿Cuánto es <span id="num1"></span> + <span id="num2"></span>? *</label>
+                    <input type="number" id="captcha" name="captcha" required>
+                </div>
+                <button type="submit" class="btn-primary btn-submit">Enviar Solicitud</button>
+            </form>
+            <div id="form-success" class="form-success" style="display: none;">
+                <div class="success-icon">✓</div>
+                <h3>¡Gracias por tu interés!</h3>
+                <p>Te contactaremos pronto para agendar tu demo.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <a href="javascript:void(0);" class="logo-link" onclick="openModal()"><img src="logo.png" alt="Yengo CRM" class="logo-img"></a>
+            <a href="javascript:void(0);" class="btn-header" onclick="openDemoModal()">Solicitar Demo</a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <p class="hero-subtitle">CRM DE VISITAS COMERCIALES</p>
+            <p class="hero-desc">Utiliza inteligencia artificial para saber a quién visitar, cuándo y por qué.</p>
+            <a href="javascript:void(0);" class="btn-primary" onclick="openDemoModal()">Agenda una Demo Gratuita</a>
+        </div>
+        <div class="scroll-hint">
+            <span>↓</span>
+        </div>
+    </section>
+
+    <!-- Problema -->
+    <section class="problema">
+        <div class="container">
+            <h2>El Problema</h2>
+            <p class="problema-intro">¿A quién visitar hoy?</p>
+            <div class="problema-grid">
+                <div class="problema-item">
+                    <div class="problema-icon">⏱</div>
+                    <h3>Tiempo perdido</h3>
+                    <p>Vendedores pierden tiempo decidiendo en lugar de vendiendo.</p>
+                </div>
+                <div class="problema-item">
+                    <div class="problema-icon">👋</div>
+                    <h3>Clientes olvidados</h3>
+                    <p>Buenos clientes dejan de comprar sin que nadie lo note.</p>
+                </div>
+                <div class="problema-item">
+                    <div class="problema-icon">📉</div>
+                    <h3>Prospectos sin seguimiento</h3>
+                    <p>Oportunidades se pierden por falta de sistema.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solución -->
+    <section class="solucion">
+        <div class="container">
+            <h2>La Solución: YENGO</h2>
+            <p class="solucion-intro">Priorización automática + Calendario inteligente + Seguimiento completo</p>
+            <div class="solucion-grid">
+                <div class="solucion-item">
+                    <span class="solucion-num">01</span>
+                    <h3>Priorización Inteligente</h3>
+                    <p>Algoritmo analiza historial de compras, tendencias y visitas. Clasifica clientes en Alta, Media y Baja prioridad.</p>
+                </div>
+                <div class="solucion-item">
+                    <span class="solucion-num">02</span>
+                    <h3>Calendario Visual</h3>
+                    <p>Interfaz de calendario para programar visitas con un clic. Control de disponibilidad y seguimiento.</p>
+                </div>
+                <div class="solucion-item">
+                    <span class="solucion-num">03</span>
+                    <h3>Cuestionarios y CRM</h3>
+                    <p>Registro estructurado de cada visita. Historial completo. Gestión de prospectos y clientes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Motor de Priorización -->
+    <section class="motor">
+        <div class="container">
+            <h2>Motor de Priorización</h2>
+            <div class="prioridades">
+                <div class="prioridad-card prioridad-alta">
+                    <h3>Alta Prioridad</h3>
+                    <ul>
+                        <li>Prospecto sin visitas</li>
+                        <li>Sin compra +30 días</li>
+                        <li>Venta cayó 20% o más</li>
+                        <li>Nuevo sin primera compra</li>
+                        <li>Top cliente perdiendo rank</li>
+                    </ul>
+                </div>
+                <div class="prioridad-card prioridad-media">
+                    <h3>Media Prioridad</h3>
+                    <ul>
+                        <li>Venta cayó menos de 20%</li>
+                        <li>Sin visita +60 días</li>
+                    </ul>
+                </div>
+                <div class="prioridad-card prioridad-baja">
+                    <h3>Baja Prioridad</h3>
+                    <ul>
+                        <li>Venta estable o creciendo</li>
+                        <li>Visitas al día</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="motor-frase">El vendedor abre YENGO y sabe exactamente qué hacer. Sin análisis, sin dudas.</p>
+        </div>
+    </section>
+
+    <!-- Referencia -->
+    <section class="referencia">
+        <div class="container">
+            <p>Sistema utilizado por</p>
+            <strong>el líder del mercado de radiología odontológica en Colombia</strong>
+            <p style="margin-top: 1rem;">En operación real desde 2024</p>
+        </div>
+    </section>
+
+    <!-- Precios -->
+    <section class="precios">
+        <div class="container">
+            <h2>Inversión</h2>
+            <div class="precios-grid">
+                <div class="precio-card">
+                    <h3>Implementación</h3>
+                    <div class="precio-valor" style="font-size: 2rem;">Cotización</div>
+                    <div class="precio-tipo">Según complejidad</div>
+                    <ul>
+                        <li>Configuración completa</li>
+                        <li>Setup de usuarios y sedes</li>
+                        <li>Reglas de prioridad</li>
+                        <li>Carga inicial de datos</li>
+                        <li>Capacitación al equipo</li>
+                        <li>Integración ERP (opcional)</li>
+                    </ul>
+                </div>
+                <div class="precio-card">
+                    <h3>Licencia Mensual</h3>
+                    <div class="precio-valor">$85 <span>USD/mes</span></div>
+                    <div class="precio-tipo">Desde (Plan Starter)</div>
+                    <ul>
+                        <li>Hasta 3 usuarios</li>
+                        <li>Pro: $180/mes (hasta 10)</li>
+                        <li>Enterprise: desde $360/mes</li>
+                        <li>Soporte incluido</li>
+                        <li>Actualizaciones continuas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="cta-final" id="contacto">
+        <div class="container">
+            <h2>Más visitas efectivas. Más ventas.</h2>
+            <p>Agenda una demo de 20 minutos y te mostramos cómo funciona.</p>
+            <a href="javascript:void(0);" class="btn-primary" onclick="openDemoModal()">Solicitar Demo</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <span class="logo">YENGO</span>
+            <p><a href="mailto:info@yengosales.com">info@yengosales.com</a></p>
+            <p style="margin-top: 1.5rem;">© 2025 YENGO. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Variables para captcha
+        let captchaAnswer = 0;
+
+        function openModal() {
+            document.getElementById('modal-yengo').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-yengo').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openDemoModal() {
+            generateCaptcha();
+            document.getElementById('modal-demo').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDemoModal() {
+            document.getElementById('modal-demo').classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset form
+            document.getElementById('demo-form').reset();
+            document.getElementById('demo-form').style.display = 'block';
+            document.getElementById('form-success').style.display = 'none';
+        }
+
+        function generateCaptcha() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            captchaAnswer = num1 + num2;
+            document.getElementById('num1').textContent = num1;
+            document.getElementById('num2').textContent = num2;
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            
+            // Verificar honeypot (si tiene valor, es bot)
+            const honeypot = document.querySelector('input[name="website"]').value;
+            if (honeypot) {
+                return false;
+            }
+
+            // Verificar captcha
+            const captchaInput = parseInt(document.getElementById('captcha').value);
+            if (captchaInput !== captchaAnswer) {
+                alert('La respuesta matemática es incorrecta. Intenta de nuevo.');
+                generateCaptcha();
+                document.getElementById('captcha').value = '';
+                return false;
+            }
+
+            // Obtener datos del formulario
+            const nombre = document.getElementById('nombre').value;
+            const empresa = document.getElementById('empresa').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const mensaje = document.getElementById('mensaje').value || 'Sin mensaje adicional';
+
+            // Crear cuerpo del email
+            const subject = encodeURIComponent('Solicitud Demo YENGO - ' + empresa);
+            const body = encodeURIComponent(
+                'Nueva solicitud de demo:\n\n' +
+                'Nombre: ' + nombre + '\n' +
+                'Empresa: ' + empresa + '\n' +
+                'Email: ' + email + '\n' +
+                'Teléfono: ' + telefono + '\n' +
+                'Mensaje: ' + mensaje
+            );
+
+            // Abrir cliente de correo
+            window.location.href = 'mailto:jcamacho@geotactic.us?subject=' + subject + '&body=' + body;
+
+            // Mostrar mensaje de éxito
+            document.getElementById('demo-form').style.display = 'none';
+            document.getElementById('form-success').style.display = 'block';
+
+            return false;
+        }
+
+        // Cerrar con Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeDemoModal();
+            }
+        });
+
+        // Cerrar al hacer clic fuera del modal
+        document.getElementById('modal-yengo').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('modal-demo').addEventListener('click', function(e) {
+            if (e.target === this) closeDemoModal();
+        });
+    </script>
+
+</body>
+</html>

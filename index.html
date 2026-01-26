@@ -1014,8 +1014,9 @@
     <section class="referencia">
         <div class="container">
             <p>Sistema utilizado por</p>
-            <strong>el líder del mercado de radiología odontológica en Colombia</strong>
-            <p style="margin-top: 1rem;">En operación real desde 2024</p>
+            <strong>Líder del mercado de radiología odontológica en Colombia</strong>
+            <p style="margin-top: 1rem;"><strong>Empresa líder en el país en venta de telas</strong></p>
+            <p style="margin-top: 0.5rem; color: var(--verde);">100% integrado con SAP</p>
         </div>
     </section>
 
@@ -1127,29 +1128,34 @@
             }
 
             // Obtener datos del formulario
-            const nombre = document.getElementById('nombre').value;
-            const empresa = document.getElementById('empresa').value;
-            const email = document.getElementById('email').value;
-            const telefono = document.getElementById('telefono').value;
-            const mensaje = document.getElementById('mensaje').value || 'Sin mensaje adicional';
+            const data = {
+                nombre: document.getElementById('nombre').value,
+                empresa: document.getElementById('empresa').value,
+                email: document.getElementById('email').value,
+                telefono: document.getElementById('telefono').value,
+                mensaje: document.getElementById('mensaje').value || 'Sin mensaje adicional'
+            };
 
-            // Crear cuerpo del email
-            const subject = encodeURIComponent('Solicitud Demo YENGO - ' + empresa);
-            const body = encodeURIComponent(
-                'Nueva solicitud de demo:\n\n' +
-                'Nombre: ' + nombre + '\n' +
-                'Empresa: ' + empresa + '\n' +
-                'Email: ' + email + '\n' +
-                'Teléfono: ' + telefono + '\n' +
-                'Mensaje: ' + mensaje
-            );
-
-            // Abrir cliente de correo
-            window.location.href = 'mailto:jcamacho@geotactic.us?subject=' + subject + '&body=' + body;
-
-            // Mostrar mensaje de éxito
-            document.getElementById('demo-form').style.display = 'none';
-            document.getElementById('form-success').style.display = 'block';
+            // Enviar a API APEX
+            fetch('https://g6344c28e083a44-dbproyectos.adb.us-ashburn-1.oraclecloudapps.com/ords/jcamacho/yengo/lead', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Mostrar mensaje de éxito
+                    document.getElementById('demo-form').style.display = 'none';
+                    document.getElementById('form-success').style.display = 'block';
+                } else {
+                    alert('Error al enviar. Intenta de nuevo.');
+                }
+            })
+            .catch(error => {
+                alert('Error de conexión. Intenta de nuevo.');
+            });
 
             return false;
         }

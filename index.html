@@ -6,6 +6,15 @@
     <title>YENGO | Saber a quién visitar, cuándo y por qué</title>
     <meta name="description" content="CRM de visitas comerciales. Priorización automática de clientes para equipos de ventas.">
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17907872775"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17907872775');
+    </script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1146,6 +1155,11 @@
             })
             .then(response => {
                 if (response.ok) {
+                    // Enviar evento de conversión a Google Ads
+                    gtag('event', 'conversion', {
+                        'send_to': 'AW-17907872775/CONVERSION_LABEL'
+                    });
+                    
                     // Mostrar mensaje de éxito
                     document.getElementById('demo-form').style.display = 'none';
                     document.getElementById('form-success').style.display = 'block';
